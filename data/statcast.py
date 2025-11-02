@@ -1,14 +1,15 @@
 import pandas as pd
+import os
 from pybaseball import statcast
 
 for x in range(2015,2026):
    start = f"{x}-01-01"
    end = f"{x}-12-31"
-   csv = f"statcast_{x}"
+   csv = f"statcast_{x}.csv"
    df = statcast(start, end)
-   print(f"Pulled year {x}")
+   print(f"Year {x} pulled successfully.")
    df.to_csv(csv, index=False)
-   print(f"Saved year {x}")
+   print(f"Year {x} saved successfully.")
 
 statcast_2015 = pd.read_csv('statcast_2015.csv')
 statcast_2016 = pd.read_csv('statcast_2016.csv')
@@ -47,3 +48,14 @@ statcast_red = statcast_full.drop(['pitch_type', 'spin_dir', 'spin_rate_deprecat
                                    'release_extension', 'pitch_number'], axis=1)
 statcast_red = statcast_red[statcast_red.game_type == 'R']
 statcast_red.to_csv('statcast_red', index=False)
+
+statcast_years = ['statcast_2015.csv', 'statcast_2016.csv', 'statcast_2017.csv', 'statcast_2018.csv', 
+                  'statcast_2019.csv', 'statcast_2020.csv', 'statcast_2021.csv', 'statcast_2022.csv', 
+                  'statcast_2023.csv', 'statcast_2024.csv', 'statcast_2025.csv']
+
+for file in statcast_years:
+   if os.path.exists(file):
+      os.remove(file)
+      print(f"File '{file}' deleted successfully.")
+   else:
+      print(f"File '{file}' does not exist.")
